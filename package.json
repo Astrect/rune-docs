@@ -1,0 +1,39 @@
+{
+  "name": "rune-docs",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "types:check": "fumadocs-mdx && tsc --noEmit",
+    "postinstall": "fumadocs-mdx",
+    "lint": "eslint",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
+  },
+  "dependencies": {
+    "@icons-pack/react-simple-icons": "^13.15.1",
+    "@types/mdx": "^2.0.14",
+    "fumadocs-core": "^16.17.5",
+    "fumadocs-mdx": "^15.4.7",
+    "fumadocs-ui": "^16.17.5",
+    "lucide-react": "^1.59.0",
+    "next": "16.4.2",
+    "react": "19.3.0",
+    "react-dom": "19.3.0"
+  },
+  "devDependencies": {
+    "@tailwindcss/turbopack": "^4",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "eslint": "^9",
+    "eslint-config-next": "16.4.2",
+    "prettier": "^3.9.10",
+    "prettier-plugin-tailwindcss": "^0.8.1",
+    "tailwindcss": "^4",
+    "typescript": "^5"
+  },
+  "packageManager": "pnpm@11.9.0"
+}

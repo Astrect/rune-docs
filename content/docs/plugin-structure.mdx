@@ -1,0 +1,138 @@
+---
+title: Plugin Structure
+---
+## Introduction
+Creating a plugin requires the following minimum requirements:
+- main.lua - Your entrypoint, the script that executes when enabling the plugin.
+- plugin.json - Manifest for the plugin.
+- `resources/` - optional resources folder containing additional resources required for the plugin.
+
+<Callout title="Plugin Paths" type="info">
+ These are the only hardcoded paths used by the plugin system. Plugins may contain additional Lua files and folders beyond what the minimum requirements are for your plugin to function.
+</Callout>
+
+<Callout title="Plugin Resources" type="warning">
+  See the dedicated resources page for more information on working and managing resources.
+</Callout>
+
+## Permissions
+
+Plugins carry a vast variety of configurable options, some of which can present a risk for a user. The plugin system allows for permission-restricted functionality to work around this, which you can configure via the manifest.
+
+<Callout title="Plugin Permissions" type="info">
+ These permissions can be either required for a plugin to function or optional allowing extended functionality of a user accepts those permissions.
+</Callout>
+
+See the [plugin page](https://pages.github.com/) for a list of available permissions and [this page](https://pages.github.com/) on checking optional permissions.
+
+## Manifest
+
+Your `plugin.json` manifest file defines user-friendly information for plugins including potential dependencies and permissions.
+
+| Field | Type | Description |
+| :--- | :---: | :---: |
+| name | `String` | Your user-friendly name for the plugin.
+| version | `String` | Your user-friendly version for the plugin. Typically the version displayed when downloading it.
+| contactEmailAddress | `String` | A contact email address for the plugin author.
+| requiredDependencies | `[String]` or `{ String -> String }` | Specifies the list of dependencies this plugin depends on. |
+| optionalDependencies | `[String]` or `{ String -> String }` | Specifies the list of dependencies this plugin optionally depends on. |
+| requiredPermissions | `[String]` | A list of permissions required for this plugin to function. |
+| optionalPermissions | `[String]` | A list of permissions that strictly provide added functionality for this plugin rather than being required for it to function. |
+| urls | `{ String -> String }` | Specifies the base URLs that may be used by this plugin, with the mapping representing `Var Name -> URL`. |
+
+<Callout title="Plugin URLs" type="warning">
+  These must represent `HTTP` or `HTTPS` URLs.
+</Callout>
+
+## Example Manifest
+```json title="plugin.json"
+{
+    "name": "My Awesome Plugin",
+    "version": "1.0.0",
+    "contactEmailAddress": "example.email@website.com",
+    "requiredDependencies": [],
+    "optionalDependencies": [],
+    "requiredPermissions": [ "httpAccess" ],
+    "optionalPermissions": [],
+    "urls": { "jagex" : "http://www.jagex.com", "rswiki" : "https://runescape.wiki/" },
+}
+```
+
+<Callout title="Additional Manifest Info" type="info">
+  Your manifest may also contain additional fields for plugins retrieved from remote repositories and are usually prefixed with the word `remote`.
+</Callout>
+
+## Dependencies
+
+Plugins can require other plugins as dependencies and or utilize multiple Lua files instead of putting everything in a singular `main.lua` file.
+
+To achieve this, you need to utilize the `require` function with the path of the file you wish to load, omitting its file extension. This will then return the result of executing that file or `nil` if the execution file(s) do not exist.
+
+<Callout title="Cylical Dependencies" type="warning">
+  Cylical dependencies are prohibited. If two or more dependencies form a cycle (e.g., A depends on B, and B depends on A), an error will occur.
+</Callout>
+
+<Callout title="Require Path" type="info">
+The path passed to `require` must be relative to the plugin's root folder.
+</Callout>
+
+<Callout title="Require Execution" type="info">
+`require` only executes the specified script once, returning a cached result in subsequent calls for the same script.
+</Callout>
+
+## External Dependencies
+
+Implementing additional libraries can help extend the functionality of your plugins without requiring you to embed them within your own plugin. 
+
+Dependencies between plugins are straight forward, requiring only a change to your `manifest.json` file to include the folder name of the plugin you wish to depend on.
+
+You can define both `requiredDependencies` and `optionalDependencies` within your `manifest.json` depending on the scope and functionality desired for your plugin.
+
+```json title="MyAwesomePlugin/plugin.json"
+"requiredDependencies": [ "MyAmazingPlugin" ],
+"optionalDependencies": [ "MyCoolOptionalPlugin" ],
+```
+
+These dependencies are then loaded before the current plugin, and its results are cloned exposing them within your own plugin as a variable.
+
+<Callout title="Plugin Naming Conflict" type="info">
+In case the plugin's name can't be used directly as an identifier in Lua, it will be prefixed or replaced with a `_` (eg. `2!GraphLib` becomes `_2_GraphLib`). An alternative is to explicitly alias it when defining dependencies, like so:<br/>
+```json title="MyAwesomePlugin/plugin.json"
+"requiredDependencies": { "OtherPlugin" : "MyAmazingPlugin" },
+"optionalDependencies": { "OptPlugin" : "MyCoolOptionalPlugin" },
+```
+</Callout>
+
+<Callout title="Warning" type="warning">
+  Since exported tables are shared across any number of imports, if you need to provide per-plugin functionality in a library plugin, consider exporting instead functionality to create a stateful object which importers can pass in calls to your library, or which wraps the calls entirely.<br/><br/>
+  Similarly, importing plugins must not modify the contents of imports, as that would also affect other plugins.
+</Callout>
+
+## Dependency Updates
+
+Whether or not optional dependencies are enabled can change while a plugin is running, plugins can define a `PluginDependencyUpdate` function in global scope which will then be called whenever the state of an optional dependency defined in `plugin.json` changes.
+
+This method is automatically converted into an [OptionalDependencyChanged](https://pages.github.com/) event.
+
+```lua
+function PluginDependencyUpdate(optionalDependencyChangedEvent)
+```
+
+The payload values of `optionalDependencyChangedEvent` are listed below.
+
+| Field | Type | Description |
+| :--- | :---: | :---: |
+| pluginIdentifier | `String` | The identifier that would be used to access that dependency's data were it available.
+| enabled | `Bool` | Whether or not the dependency is enabled currently.
+
+```lua
+
+local enableAdditionalFeatures = false
+
+function PluginDependencyUpdate(info)
+    print("Optional dependency", info.pluginIdentifier, "is now", info.enabled)
+
+    if info.pluginIdentifier == "OptPlugin" then
+        enableAdditionalFeatures = info.enabled
+    end
+end```

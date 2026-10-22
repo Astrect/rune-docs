@@ -1,0 +1,28 @@
+---
+title: Managing Plugins
+---
+## Introduction
+Plugins can be managed with a variety list of client commands and without the need to restart your game client.
+
+## From the console
+
+<Callout title="Plugin Management" type="warning">
+  Currently there is no ingame management UI for plugins, you must use the following console commands until then.
+</Callout>
+
+| Command (with alias) | Description |
+| :--- | :---: |
+| plugins_setpath `<disk path>` | Sets the root directory for plugins | 
+| plugins_refresh (prf) | Scans the plugins folder for valid plugins after adding, removing, or editing plugin manifests. | 
+| plugins_list (plist) | Lists all available plugins |
+| plugins_setenabled `<plugin name>` `<enabled?>`  | Enables/disables the specified plugin. `enabled` defaults to true if omitted. |
+| plugins_enable `<plugin name>` (pon `<plugin name>`)  | Enables the specified plugin. |
+| plugins_disable `<plugin name>` (poff `<plugin name>`)  | Disables the specified plugin. |
+| plugins_reload `<plugin name>` (prl `<plugin name>`)  | Reloads the specified plugin. |
+| plugins_permissions_request `<plugin name>` (ppr `<plugin name>`)  | Causes a loaded plugin to request any permissions defined in its manifest. |
+| plugins_permissions_enable `<plugin name>` `<permission>` (ppe `<plugin name>` `<permission>`)  | Enables the given permission for a plugin. |
+| plugins_permissions_disable `<plugin name>` `<permission>` (ppd `<plugin name>` `<permission>`)  | Disables the given permission for a plugin. |
+
+<Callout title="Plugin Permissions" type="warning">
+  Currently the only available plugin permissions are: `httpAccess`, `chatAccess`, `trackingAccess`
+</Callout>

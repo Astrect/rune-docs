@@ -1,0 +1,60 @@
+name: Bug Report
+description: Report a bug or issue with the documentation site
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for taking the time to report a bug! Please fill out the form below with as much detail as possible.
+
+  - type: textarea
+    attributes:
+      label: What's broken?
+      description: Tell us what's wrong and what you were trying to do.
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. Go to '...'
+        2. Click on '...'
+        3. See error
+    validations:
+      required: true
+
+  - type: input
+    attributes:
+      label: Page URL
+      description: Link to the page where you found the bug
+      placeholder: https://...
+    validations:
+      required: true
+
+  - type: input
+    attributes:
+      label: Browser
+      placeholder: e.g., Chrome 120, Firefox 121
+    validations:
+      required: true
+
+  - type: dropdown
+    attributes:
+      label: Device
+      options:
+        - Desktop
+        - Mobile
+        - Tablet
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: Screenshots or logs
+      description: Drag and drop any screenshots or error messages here
+
+  - type: textarea
+    attributes:
+      label: Additional context
+      description: Anything else that might help (when it started, workarounds tried, etc.)

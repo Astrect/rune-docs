@@ -1,0 +1,14 @@
+{
+    "pages": [
+        "index",
+        "managing-plugins",
+        "plugin-structure",
+        "---Guides---",
+        "...guides",
+        "...server",
+        "---Community---",
+        "publishing",
+        "projects",
+        "contributing"
+    ]
+}

@@ -1,0 +1,11 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Official RuneScape Plugin Discord
+    url: https://rs.game/RS-Plugin-Discord
+    about: Join the Official RuneScape Plugin Discord for for help and discussions with plugins
+  - name: Official RuneScape Plugin Documentation
+    url: https://developer.runescape.com/
+    about: Visit the official RuneScape documentation website for game modding
+  - name: Official RuneScape Website
+    url: https://runescape.com/
+    about: Visit the official RuneScape website for game information
