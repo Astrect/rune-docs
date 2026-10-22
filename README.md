@@ -59,5 +59,5 @@ pnpm dev
 - `pnpm dev` - Start the development server
 - `pnpm build` - Build the production application
 - `pnpm start` - Run the production server
-- `bun run types:check` - Validate TypeScript types and MDX files`
+- `pnpm run types:check` - Validate TypeScript types and MDX files`
 - `pnpm lint` - Run ESLint for code quality
