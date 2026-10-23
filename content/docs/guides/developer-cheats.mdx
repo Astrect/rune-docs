@@ -3,4 +3,787 @@ title: Developer Cheats
 ---
 ## Introduction
 
-Coming soon
+Client API development servers offer a range of cheat commands that allow developers to configure their in-game characters for plugin testing.
+
+<Callout title="Page Information" type="info">
+Compiled from the [official documentation](https://developer.runescape.com/rs/cheats.html#) to provide quick, centralized access to this information.
+</Callout>
+
+<Callout title="About Cheats" type="warning">
+  These cheat commands are unavailable in the live game environment. Avoid relying on their output for plugin logic unless the plugin is specifically intended for use in the development environment.
+</Callout>
+
+Commands must be entered into the client console window, which can be opened by pressing the follow key combinations:
+
+| Platform | Key Combination |
+| :--- | :---: |
+| Windows | ````ALT + ` ```` |
+| Linux | ````ALT + ` ```` |
+| Mac OSX | ````Option + ` ```` |
+
+<Callout title="Cheat Abuse" type="warning">
+  All cheat command usage is logged on the server. Accounts found abusing these commands for any purpose may be subject to temporary or permanent bans.
+</Callout>
+
+## Command List
+
+<Callout title="Cheat Usage" type="info">
+  All cheat commands begin with the `!` prefix.
+</Callout>
+
+| Command | Example | Description |
+| :--- | :---: | :---: |
+| [tele](#tele) | `!tele 0,50,50,32,32` | Teleports the player character to the specified coordinates.
+| [tele](#getcoord) | `!getcoord` | Returns the current coordinate of the player character.
+| [give](#give) | `!give logs` | Adds the named [ObjType](https://developer.runescape.com/game/config/objtype.html) to the player character's backpack.
+| [objadd](#objadd) | `!objadd logs` | Adds the named [ObjType](https://developer.runescape.com/game/config/objtype.html) to the ground at the feet of the player character.
+| [listinv](#listinv) | `!listinv bank` | Prints the contents of the inventory to the console.
+| [listlocs](#listlocs) | `!listlocs 32` | Prints a list of nearby locs to the console.
+| [listnpcs](#listnpcs) | `!listnpcs 32` | Prints a list of nearby NPCs to the console.
+| [listobjs](#listobjs) | `!listobjs 32 logs` | Prints a list of nearby Objs to the console, optionally filtering for a specific [ObjType](https://developer.runescape.com/game/config/objtype.html).
+| [skillsetlevel](#skillsetlevel) | `!skillsetlevel attack 99` | Sets the named [SkillType](https://developer.runescape.com/game/player.html#skilltype) to the given level.
+| [skilladdlevel](#skilladdlevel) | `!skilladdlevel magic 3` | Add the given level count to the named [SkillType](https://developer.runescape.com/game/player.html#skilltype).
+| [skillsetxp](#skillsetxp) | `!skillsetxp herblore 104273167` | Sets the named [SkillType](https://developer.runescape.com/game/player.html#skilltype) to the given XP value.
+| [skilladdxp](#skilladdxp) | `!skilladdxp dungeoneering 1000` | Add the given XP value to the named [SkillType](https://developer.runescape.com/game/player.html#skilltype).
+| [getvar](#getvar) | `!getvar combatv2_armour_rating` | Returns the value of the named [VarType](https://developer.runescape.com/game/config/vartype.html).
+| [setvar](#setvar) | `!setvar barrows_killed_dharok 1` | Set the value of the named [VarType](https://developer.runescape.com/game/config/vartype.html) to the given value.
+| [getvarc](#getvarc) | `!getvarc tooltip_time` | Returns the value of the named [VarClient](https://developer.runescape.com/game/config/vartype.html) variable.
+| [setvarc](#setvarc) | `!setvarc castlewars_red_kills 100` | Set the value of the named [VarClient](https://developer.runescape.com/game/config/vartype.html) variable to the given value.
+| [resetsave](#resetsave) | `!resetsave` | Flags the player account to be reset on the next relog.
+| [unresetsave](#unresetsave) | `!unresetsave` | Unflags the player account to be reset on the next relog.
+| [godmode](#godmode) | `!godmode` | Toggles player combat invulnerability.
+| [maxhp](#maxhp) | `!maxhp` | Toggles player health to constantly renew to max.
+| [hitall](#hitall) | `!hitall` | Applies 5000 damage to all NPCs within 50 tiles of the player character.
+| [allinone](#allinone) | `!allinone` | Completes all quests, tasks, and more.
+| [bank](#bank) | `!bank` | Directly opens the player characters's bank.
+| [clearworn](#clearworn) | `!clearworn` | Destroys all objects in the player character's `worn` inventory.
+| [clearinv](#clearinv) | `!clearinv` | Destroys all objects in the player character's `inv` inventory.
+| [coordsave](#coordsave) | `!coordsave` | Stores the player character's current coordinate.
+| [coordtele](#coordtele) | `!coordtele` | Teleports the player character to the coordinate stored by the previous `coordsave` call.
+| [setgroupironman](#setgroupironman) | `!setgroupironman 1` | Sets the group-ironman game status of the player character.
+| [sethardcore](#sethardcore) | `!sethardcore 1` | Sets the hardcore game status of the player character.
+| [setironman](#setironman) | `!setironman 1` | Sets the ironman game status of the player character.
+| [archcompletetutorial](#archcompletetutorial) | `!archcompletetutorial` | Completes the Archaeology tutorial.
+| [archgivemats](#archgivemats) | `!archgivemats 500 bank` | Adds a given count of all Archaeology materials to the given [inventory](https://developer.runescape.com/game/config/invtype.html).
+| [inventgivemats](#inventgivemats) | `!inventgivemats` | Supplies the player character with the maximum storage count of every Invention material.
+| [inventwipemats](#inventwipemats) | `!inventwipemats` | Clears all Invention materials stored by the player character.
+| [inventmachinerun](#inventmachinerun) | `!inventmachinerun` | Run Invention machines for 1 simulated hour.
+| [inventsetperks](#inventsetperks) | `!inventsetperks 0 7 1 44 2 1` | Assigns [Invention perks](https://developer.runescape.com/rs/cheats.html#invention-perk-ids) and ranks to the gizmo slot of an object in the player character's `inv` inventory.
+| [tlihide](#tlihide) | `!tlihide` | Hides the game interface.
+| [tlishow](#tlishow) | `!tlishow` | Unhides the game interface.
+| [pouchadd](#pouchadd) | `!pouchadd 44 100000 1` | Adds the given count of the give [currency type](https://developer.runescape.com/rs/cheats.html#currency-ids) to the player character's currency pouch.
+| [pouchdel](#pouchdel) | `!pouchdel 9 12345` | Removes the given count of the give [currency type](https://developer.runescape.com/rs/cheats.html#currency-ids) to the player character's currency pouch.
+| [pouchdeposit](#pouchdeposit) | `!pouchdeposit 11 inv` | Transfers all of the given [currency type](https://developer.runescape.com/rs/cheats.html#currency-ids) from the given inventory to the player character's currency point.
+| [pouchwithdraw](#pouchwithdraw) | `!pouchwithdraw 11` | Transfers as much of the given [currency type](https://developer.runescape.com/rs/cheats.html#currency-ids) that can fit from the player character's currency pouch to the player character's `inv` inventory.
+| [pouchspace](#pouchspace) | `!pouchspace 44` | Returns the available space for the give [currency type](https://developer.runescape.com/rs/cheats.html#currency-ids) in the player character's currency pouch.
+| [pouchtotal](#pouchtotal) | `!pouchtotal 44` | Returns the current total of the given [currency type](https://developer.runescape.com/rs/cheats.html#currency-ids) in the player character's currency pouch.
+| [testpouchadd](#testpouchadd) | `!testpouchadd 44 100000` | Tests if the exact given count of the given [currency type](https://developer.runescape.com/rs/cheats.html#currency-ids) can fit in the player character's currency pouch, adding that amount if the test is successful.
+| [testpouchdel](#testpouchdel) | `!testpouchdel 9 12345` | Tests if the exact given count of the given [currency type](https://developer.runescape.com/rs/cheats.html#currency-ids) can be removed from the player character's currency pouch, removing that amount if the test is successful.\
+
+<Callout title="Config Names" type="info">
+ Config names used in cheat commands are case-insensitive, so all of these will work: `!give Logs`, `!give logs` and `!give LOGS`.
+</Callout>
+
+### tele
+
+| Syntax | Description |
+| :--- | :---: |
+| !tele `<coord>` | Teleports the player charater to the given full or shordhand coordinate. |
+| !tele `<named_teleport>` | Teleports the player character to the named teleport destination. |
+
+Teleports the player character to a given coordinate or named location.
+
+Teleport to the bank at the top of Lumbridge Castle with either:
+
+```
+!tele 2,50,50,8,19
+!tele 2_50_50_8_19
+```
+
+Mapsquare shorthard coordinates are also valid.
+Teleport to the centre of mapsquare `50,50` with either:
+
+```
+!tele 0,50,50
+!tele 0_50_50
+```
+
+Teleport to the Grand Exchange in Varrock with a named teleport destination:
+
+```
+!tele grandexchange
+```
+
+### getcoord
+
+| Syntax | Description |
+| :--- | :---: |
+| `!getcoord` | Returns the current coordinate of the player character. |
+
+Returns the current coordinate of the player character.
+
+Useful to quickly discover tile positions for stationary NPCs, etc.
+
+While standing at the Lumbridge Market:
+
+```
+!getcoord
+0,50,50,9,56
+```
+
+<Callout title="Information" type="info">
+ If the player is standing in an instance, which is built from tiles elsewhere in the game world, this command will return:
+
+ <ul>
+ <li>The coordinate within the instance</li>
+ <li>The source coordinate for the tile data used at that coordinate</li>
+ </ul>
+</Callout>
+
+```
+!getcoord
+0,104,1,40,56
+Region source: 0,1,78,48,40
+```
+
+### give
+
+| Syntax | Description |
+| :--- | :---: |
+| `!give <obj>` | Adds one of the given [ObjType](https://developer.runescape.com/game/config/objtype.html) to the player character's backpack (`config.Inv.INV`). |
+| `!give <obj> <inv>` | Adds one of the given [ObjType](https://developer.runescape.com/game/config/objtype.html) to the player character's named [InvType](https://developer.runescape.com/game/config/invtype.html). |
+| `!give <obj> <count>` | Adds `count` of the given [ObjType](https://developer.runescape.com/game/config/objtype.html) to the player character's backpack (`config.Inv.INV`). |
+| `!give <obj> <count> <inv>` | Adds `count` of the given [ObjType](https://developer.runescape.com/game/config/objtype.html) to the player character's named [InvType](https://developer.runescape.com/game/config/invtype.html). |
+
+Adds the named item(s) to a player character's inventory.
+Stops when the inventory is full.
+
+The name of the item matches the [ObjType](https://developer.runescape.com/game/config/objtype.html) and [InvType](https://developer.runescape.com/game/config/invtype.html) config names, such as:
+
+```
+config.Obj.LOGS
+config.Inv.BANK
+```
+
+```bash title="example"
+!give logs
+!give coins 200000000 bank
+```
+
+### objadd
+
+| Syntax | Description |
+| :--- | :---: |
+| `!objadd <obj>` | Adds one of the given [ObjType](https://developer.runescape.com/game/config/objtype.html) to the ground at the current coordinate of the player character. |
+| `!objadd <obj> <count>` | Adds `count` of the given [ObjType](https://developer.runescape.com/game/config/objtype.html) to the ground at the current coordinate of the player character. |
+
+Adds the named item(s) on the ground coordinate at the feet of the player character.
+
+<Callout title="Warning" type="warning">
+ Do not spawn items everywhere. Be cautious of how you utilize this command.
+</Callout>
+
+The name of the item matches the [ObjType](https://developer.runescape.com/game/config/objtype.html) config name, such as:
+
+```
+config.Obj.LOGS
+config.Obj.YELLOW_PARTYHAT
+```
+
+```bash title="example"
+!objadd logs
+!objadd bronze_arrowheads 20
+```
+
+### listinv
+
+| Syntax | Description |
+| :--- | :---: |
+| `!listinv <inv>` | Prints the contents of the player character's named [InvType](https://developer.runescape.com/game/config/invtype.html) to the client console, bypassing the need to wait for the inventory to be transmitted to the client. |
+
+Prints out the contents of an inventory to the console. Will also print the values of any [VarObj](https://developer.runescape.com/game/config/vartype.html) variables assigned to each entry in the inventory.
+
+```bash title="example"
+!listinv bank
+```
+
+### listlocs
+
+| Syntax | Description |
+| :--- | :---: |
+| `!listlocs <radius>` | Prints a list of nearby locs to the console. |
+
+Prints out a list of every [LocEntity](https://developer.runescape.com/game/entity/locentity.html) within `radius` tiles of the player character to the console.
+
+The maximum value of `radius` is `32`.
+
+```bash title="example"
+!listlocs 32
+```
+
+### listnpcs
+
+| Syntax | Description |
+| :--- | :---: |
+| `!listnpcs <radius>` | Prints a list of nearby NPCs to the console. |
+
+Prints out a list of every [NpcEntity](https://developer.runescape.com/game/entity/npcentity.html) within `radius` tiles of the player character to the console.
+
+The maximum value of `radius` is `32`.
+
+```bash title="example"
+!listnpcs 32
+```
+
+### listobjs
+
+| Syntax | Description |
+| :--- | :---: |
+| `!listobjs <radius> <obj_filter>` | Prints a list of nearby Objs to the console, optionally filtering for a specific [ObjType](https://developer.runescape.com/game/config/objtype.html). |
+
+Prints out a list of every [ObjType](https://developer.runescape.com/game/config/objtype.html) within `radius` tiles of the player character to the console.
+
+The maximum value of `radius` is `32`.
+
+Filter for a specific [ObjType](https://developer.runescape.com/game/config/objtype.html) by sending its config name, or send `null` to return all objects.
+
+```bash title="example"
+!listobjs 32 logs
+```
+
+### skillsetlevel
+
+| Syntax | Description |
+| :--- | :---: |
+| `!skillsetlevel <skill> <level>` | Sets the player character's level in [SkillType](https://developer.runescape.com/game/player.html#skilltype) to the given level number. |
+
+Sets the level of the given [SkillType](https://developer.runescape.com/game/player.html#skilltype) to the given level number.
+
+<Callout title="Warning" type="warning">
+ This cheat command *will not* trigger level-up checks on the server. <br/>
+ Combine commands to achieve this: <br/>
+ ```
+ !skillsetlevel attack 98
+!skilladdlevel attack 1
+```
+</Callout>
+
+```bash title="example"
+!skillsetlevel attack 99
+```
+
+### skilladdlevel
+
+| Syntax | Description |
+| :--- | :---: |
+| `!skilladdlevel <skill> <count>` | Add the given level count to the player character's level in [SkillType](https://developer.runescape.com/game/player.html#skilltype). |
+
+Adds levels to the given [SkillType](https://developer.runescape.com/game/player.html#skilltype).
+
+<Callout title="Warning" type="warning">
+This cheat command will trigger level-up checks on the server.
+</Callout>
+
+```bash title="example"
+!skilladdlevel magic 3
+```
+
+### skillsetxp
+
+| Syntax | Description |
+| :--- | :---: |
+| `!skillsetxp <skill> <xp>` | Sets the player character's XP total in [SkillType](https://developer.runescape.com/game/player.html#skilltype) to the given `xp` number. |
+
+Sets the XP of the given [SkillType](https://developer.runescape.com/game/player.html#skilltype) to the given XP number.
+
+<Callout title="Warning" type="warning">
+ This cheat command *will not* trigger level-up checks on the server. <br/>
+ Combine commands to achieve this: <br/>
+ ```
+!skillsetxp attack 4400
+!skilladdxp attack 100
+```
+</Callout>
+
+```bash title="example"
+!skillsetxp herblore 104273167
+```
+
+### skilladdxp
+
+| Syntax | Description |
+| :--- | :---: |
+| `!skilladdxp <skill> <count>` | Add the given XP `count` to the player character's level in [SkillType](https://developer.runescape.com/game/player.html#skilltype). |
+
+Adds XP to the given [SkillType](https://developer.runescape.com/game/player.html#skilltype).
+
+<Callout title="Warning" type="warning">
+This cheat command will trigger level-up checks on the server.
+</Callout>
+
+```bash title="example"
+!skilladdxp dungeoneering 1000
+```
+
+### getvar
+
+| Syntax | Description |
+| :--- | :---: |
+| `!getvar <name>` | Returns the value of the given `name` [VarPlayer](https://developer.runescape.com/game/config/vartype.html). |
+
+Returns the value of the given [VarType](https://developer.runescape.com/game/config/vartype.html).
+
+The variable type must be `VarPlayer` or a `VarBit` based on one.
+
+```bash title="example"
+!getvar combatv2_armour_rating
+```
+
+### setvar
+
+| Syntax | Description |
+| :--- | :---: |
+| `!setvar <name> <value>` | Sets the value of the given `name` [VarPlayer](https://developer.runescape.com/game/config/vartype.html) to `value`. |
+
+Sets the value of the given [VarType](https://developer.runescape.com/game/config/vartype.html).
+
+The variable type must be `VarPlayer` or a `VarBit` based on one.
+
+Valid value types can be, depending the variable data type, `Integer`, `Long` or `String`.
+
+```bash title="example"
+!setvar barrows_killed_dharok 1
+```
+
+### getvarc
+
+| Syntax | Description |
+| :--- | :---: |
+| `!getvarc <name>` | Returns the value of the given `name` [VarClient](https://developer.runescape.com/game/config/vartype.html). |
+
+Returns the value of the given [VarType](https://developer.runescape.com/game/config/vartype.html).
+
+```bash title="example"
+!getvarc tooltip_time
+```
+
+### setvarc
+
+| Syntax | Description |
+| :--- | :---: |
+| `!setvarc <name> <value>` | Sets the value of the given `name` [VarClient](https://developer.runescape.com/game/config/vartype.html) to `value`. |
+
+Sets the value of the given [VarType](https://developer.runescape.com/game/config/vartype.html).
+
+The variable type must be `VarClient`.
+
+Valid value types can be, depending the variable data type, `Integer`, `Long` or `String`.
+
+```bash title="example"
+!setvarc castlewars_red_kills 100
+```
+
+### resetsave
+
+| Syntax | Description |
+| :--- | :---: |
+| `!resetsave` | Flags the active player character's account for reset. |
+
+Flags the player character's account to be reset when they next log out of the server.
+
+This can be aborted by calling `!unresetsave` before logging out.
+
+```bash title="example"
+!resetsave
+```
+
+### unresetsave
+
+| Syntax | Description |
+| :--- | :---: |
+| `!unresetsave` | Aborts the active player character's pending account reset. |
+
+Aborts any pending player character's account reset flag.
+
+```bash title="example"
+!unresetsave
+```
+
+### godmode
+
+| Syntax | Description |
+| :--- | :---: |
+| `!godmode` | Toggles player combat invulnerability. |
+
+Enables or disables combat invulnerability for the player character.
+
+```bash title="example"
+!godmode
+```
+
+### maxhp
+
+| Syntax | Description |
+| :--- | :---: |
+| `!maxhp` | Toggles player health to constantly renew to max. |
+
+Enables or disables whether the health of the player is continually set to its maximum value.
+
+```bash title="example"
+!maxhp
+```
+
+### hitall
+
+| Syntax | Description |
+| :--- | :---: |
+| `!hitall` | Applies 5000 damage to all NPCs within 50 tiles of the player character. |
+
+All NPCs with 50 tiles of the player character are dealt 5000 damage.
+
+```bash title="example"
+!hitall
+```
+
+### allinone
+
+| Syntax | Description |
+| :--- | :---: |
+| `!allinone` | Completes all quests, tasks, and more. |
+
+Sets all necessary variables to flag quests, tasks, and so on, as having been completed, and sets all skills to their maximum level.
+
+```bash title="example"
+!allinone
+```
+
+### bank
+
+| Syntax | Description |
+| :--- | :---: |
+| `!bank` | Directly opens the player characters's bank. |
+
+```bash title="example"
+!bank
+```
+
+### clearworn
+
+| Syntax | Description |
+| :--- | :---: |
+| `!clearworn` | Destroys all objects in the player character's worn inventory. |
+
+Wipes the `worn` inventory of all items.
+
+This is the inventory that stores all currently equipped items.
+
+```bash title="example"
+!clearworn
+```
+
+### clearinv
+
+| Syntax | Description |
+| :--- | :---: |
+| `!clearinv` | Destroys all objects in the player character's inv inventory. |
+
+Wipes the `inv` inventory of all items.
+
+This is the backpack inventory.
+
+```bash title="example"
+!clearinv
+```
+
+### coordsave
+
+| Syntax | Description |
+| :--- | :---: |
+| `!coordsave` | Stores the player character's current coordinate. |
+
+Records the player character's current coordinate so it can be teleported to later using the [coordtele](#coordtele) cheat command.
+
+```bash title="example"
+!coordsave
+```
+
+### coordtele
+
+| Syntax | Description |
+| :--- | :---: |
+| `!coordtele` | Teleports the player character to the coordinate stored by the previous `coordsave` call. |
+
+Resets the player character's current coordinate to the one stored after using the [coordsave](#coordsave) cheat command.
+
+```bash title="example"
+!coordtele
+```
+
+### setgroupironman
+
+| Syntax | Description |
+| :--- | :---: |
+| `!setgroupironman <state>` | Sets the group-ironman game status of the player character. |
+
+Assigns the given `state` to the player character's group-ironman game status.
+
+Valid values of `state` are: `0` = disabled or `1` = enabled
+
+```bash title="example"
+!setgroupironman 1
+```
+
+### sethardcore
+
+| Syntax | Description |
+| :--- | :---: |
+| `!sethardcore <state>` | Sets the hardcore game status of the player character. |
+
+Assigns the given `state` to the player character's hardcore game status.
+
+Valid values of `state` are: `0` = disabled or `1` = enabled
+
+```bash title="example"
+!sethardcore 1
+```
+
+### setironman
+
+| Syntax | Description |
+| :--- | :---: |
+| `!setironman <state>` | Sets the ironman game status of the player character. |
+
+Assigns the given `state` to the player character's ironman game status.
+
+Valid values of `state` are: `0` = disabled or `1` = enabled
+
+```bash title="example"
+!setironman 1
+```
+
+### archcompletetutorial
+
+| Syntax | Description |
+| :--- | :---: |
+| `!archcompletetutorial` | Completes the Archaeology tutorial. |
+
+Progresses all necessary variables to complete the Archaeology tutorial and provides the relevant items obtained during it.
+
+```bash title="example"
+!archcompletetutorial
+```
+
+### archgivemats
+
+| Syntax | Description |
+| :--- | :---: |
+| `!archgivemats <count> <inv>` | Adds a given count of all Archaeology materials to the given [inventory](https://developer.runescape.com/game/config/invtype.html). |
+
+Adds `count` of every Archaeology material type to `inv`.
+
+```bash title="example"
+!archgivemats 500 bank
+```
+
+### inventgivemats
+
+| Syntax | Description |
+| :--- | :---: |
+| `!inventgivemats` | Supplies the player character with the maximum storage count of every Invention material. |
+
+Sets the necessary variables to provide the player character with the maximum possible amount of all types of Invention material.
+
+```bash title="example"
+!inventgivemats
+```
+
+### inventwipemats
+
+| Syntax | Description |
+| :--- | :---: |
+| `!inventgivemats` | Clears all Invention materials stored by the player character. |
+
+Sets the necessary variables to remove all types of Invention material from the player character.
+
+```bash title="example"
+!inventwipemats
+```
+
+### inventmachinerun
+
+| Syntax | Description |
+| :--- | :---: |
+| `!inventmachinerun` | Run Invention machines for 1 simulated hour. |
+
+Causes constructed Invention machines to be progressed by 1 hour of in-game time.
+
+```bash title="example"
+!inventmachinerun
+```
+
+### inventsetperks
+
+| Syntax | Description |
+| :--- | :---: |
+| `!inventsetperks <inventory_slot> <perk_id_1> <perk_rank_1> <perk_id__2> <perk_rank_2> <gizmo_slot>` | Assigns [Invention perks](https://developer.runescape.com/rs/cheats.html#invention-perk-ids) and ranks to the gizmo slot of an object in the player character's inv inventory. |
+
+Updates a valid augmentable object in the player character's `inv` inventory at the given `inventory_slot` number.
+
+Valid `gizmo_slot` values are `1` and `2`
+
+Each gizmo can have two perks.
+
+Valid `perk_id_#` values, and their valid `perk_rank_#` ranges, can be found in the [Invention Perk IDs](https://developer.runescape.com/rs/cheats.html#invention-perk-ids) list.
+
+```bash title="example"
+!inventsetperks 0 7 1 44 2 1
+```
+
+### tlihide
+
+| Syntax | Description |
+| :--- | :---: |
+| `!tlihide` | Hides the game interface. |
+
+Hides all top-level interface windows. Useful for taking screenshots.
+
+```bash title="example"
+!tlihide
+```
+
+### tlishow
+
+| Syntax | Description |
+| :--- | :---: |
+| `!tlishow` | Unhides the game interface. |
+
+Unhides all top-level interface windows.
+
+```bash title="example"
+!tlishow
+```
+
+### pouchadd
+
+| Syntax | Description |
+| :--- | :---: |
+| `!pouchadd <currency_id> <count> <ignore_overflow>` | Adds the given count of the given currency type to the player character's currency pouch. |
+
+Adds `count` of the given `currency_id` type to the player character's currency pouch.
+
+Valid `currency_id` values can be found in the [Currency IDs](https://developer.runescape.com/rs/cheats.html#currency-ids) list.
+
+Valid values of `ignore_overflow` are: `0` = disabled or `1` = enabled
+
+If the new total currency would overflow that currency's maximum limit then: If `ignore_overflow` is:
+
+- `ignore_overflow` = `1` - The total currency is clamped to the maximmum limit
+- `ignore_overflow` = `0` - No currency is added
+
+```bash title="example"
+!pouchadd 44 100000 1
+```
+
+### pouchdel
+
+| Syntax | Description |
+| :--- | :---: |
+| `!pouchdel <currency_id> <count>` | Removes the given count of the given currency type from the player character's currency pouch. |
+
+Removes `count` of the given `currency_id` type from the player character's currency pouch.
+
+Valid `currency_id` values can be found in the [Currency IDs](https://developer.runescape.com/rs/cheats.html#currency-ids) list.
+
+If the new total currency would be less than `0` then no currency is removed.
+
+```bash title="example"
+!pouchdel 9 12345
+```
+
+### pouchdeposit
+
+| Syntax | Description |
+| :--- | :---: |
+| `!pouchdeposit <currency_id> <inv>` | Transfers all of the given currency type from the given inventory to the player character's currency point. |
+
+Transfers all of the given `currency_id` type from the given [Inventory](https://developer.runescape.com/game/config/invtype.html) `inv` to the player character's currency pouch.
+
+Valid `currency_id` values can be found in the [Currency IDs](https://developer.runescape.com/rs/cheats.html#currency-ids) list.
+
+```bash title="example"
+!pouchdeposit 11 inv
+```
+
+### pouchwithdraw
+
+| Syntax | Description |
+| :--- | :---: |
+| `!pouchwithdraw <currency_id>` | Transfers the given currency type from the player character's currency pouch to the player character's `INV` inventory. |
+
+Transfers the given currency_id type from the player's currency pouch into the player character's backpack [Inventory](https://developer.runescape.com/game/config/invtype.html) `inv`. 
+
+A prompt will be shown to ask how much currency should be moved.
+
+Valid `currency_id` values can be found in the [Currency IDs](https://developer.runescape.com/rs/cheats.html#currency-ids) list.
+
+```bash title="example"
+!pouchwithdraw 11
+```
+
+### pouchspace
+
+| Syntax | Description |
+| :--- | :---: |
+| `!pouchspace <currency_id>` | Returns the available space for the given currency type in the player character's currency pouch. |
+
+Calculates how much additional currency of type currency_id can be added to the player character's currency pouch.
+
+Valid `currency_id` values can be found in the [Currency IDs](https://developer.runescape.com/rs/cheats.html#currency-ids) list.
+
+```bash title="example"
+!pouchspace 44
+```
+
+### pouchtotal
+
+| Syntax | Description |
+| :--- | :---: |
+| `!pouchtotal <currency_id>` | Returns the current total of the given currency type in the player character's currency pouch. |
+
+Calculates how much currency of type `currency_id` is in the player character's currency pouch.
+
+Valid `currency_id` values can be found in the [Currency IDs](https://developer.runescape.com/rs/cheats.html#currency-ids) list.
+
+```bash title="example"
+!pouchtotal 44
+```
+
+### testpouchadd
+
+| Syntax | Description |
+| :--- | :---: |
+| `!testpouchadd <currency_id> <count>` | Tests if the exact given count of the given currency type can fit in the player character's currency pouch, adding that amount if the test is successful. |
+
+Performs a test to see whether `count` of `currency_id` can fit in the player character's currency pouch.
+If the test is successful, `count` is added. If the test is unsuccessful, nothing is added.
+
+Valid `currency_id` values can be found in the [Currency IDs](https://developer.runescape.com/rs/cheats.html#currency-ids) list.
+
+```bash title="example"
+!testpouchadd 44 100000
+```
+
+### testpouchdel
+
+| Syntax | Description |
+| :--- | :---: |
+| `!testpouchdel <currency_id> <count>` | Tests if the exact given count of the given currency type can be removed from the player character's currency pouch, removing that amount if the test is successful. |
+
+Performs a test to see whether `count` of `currency_id` can be removed from the player character's currency pouch.
+If the test is successful, `count` is removed. If the test is unsuccessful, nothing is removed.
+
+Valid `currency_id` values can be found in the [Currency IDs](https://developer.runescape.com/rs/cheats.html#currency-ids) list.
+
+```bash title="example"
+!testpouchdel 9 12345
+```
